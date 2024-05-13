@@ -8,6 +8,7 @@ public class GameManagerScript : MonoBehaviour {
 
 	public GameObject playerPrefab;
 	public GameObject BoxPrefab;
+	public GameObject clearText;
 
 	int[,] map;
 	GameObject[,] field;
@@ -117,7 +118,7 @@ public class GameManagerScript : MonoBehaviour {
 			MoveNumber("Player", playerIndex, playerIndex + new Vector2Int(1, 0));
 		}
 		if (IsClear()) {
-			Debug.Log("Clear");
+			clearText.SetActive(true);
 		}
 	}
 }

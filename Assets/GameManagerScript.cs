@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,10 +10,13 @@ public class GameManagerScript : MonoBehaviour {
 	public GameObject playerPrefab;
 	public GameObject BoxPrefab;
 	public GameObject clearText;
+	public GameObject goalPrefab;
 
 	int[,] map;
 	GameObject[,] field;
-	List<Vector2Int> goals = new List<Vector2Int>();
+	readonly List<GameObject> goalsObj = new();
+	readonly List<Vector2Int> goals = new();
+	
 
 	Vector2Int GetPlayerIndex() {
 		for (int y = 0; y < field.GetLength(0); ++y) {
@@ -26,7 +30,7 @@ public class GameManagerScript : MonoBehaviour {
 	}
 
 	Vector3 MakePositionFromIndex(Vector2Int index) {
-		return new Vector3Int(index.y - field.GetLength(1) / 2, field.GetLength(0) - index.x - field.GetLength(0) / 2, -3);
+		return new Vector3Int(index.y - field.GetLength(1) / 2, field.GetLength(0) - index.x - field.GetLength(0) / 2, 0);
 	}
 
 	bool MoveNumber(string tag, Vector2Int moveFromIndex, Vector2Int moveToIndex) {
@@ -93,6 +97,13 @@ public class GameManagerScript : MonoBehaviour {
 						break;
 					case 3:
 						goals.Add(new Vector2Int(y, x));
+						Vector3 tempPos = MakePositionFromIndex(new Vector2Int(y, x));
+						tempPos.z = 0.01f;
+						goalsObj.Add(Instantiate(
+							goalPrefab,
+							tempPos, 
+							Quaternion.identity
+							));
 						break;
 				}
 			}

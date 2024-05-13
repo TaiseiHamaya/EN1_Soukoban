@@ -11,6 +11,7 @@ public class GameManagerScript : MonoBehaviour {
 
 	int[,] map;
 	GameObject[,] field;
+	List<Vector2Int> goals = new List<Vector2Int>();
 
 	Vector2Int GetPlayerIndex() {
 		for (int y = 0; y < field.GetLength(0); ++y) {
@@ -50,12 +51,22 @@ public class GameManagerScript : MonoBehaviour {
 		return true;
 	}
 
+	bool IsClear() {
+		for(int i = 0; i < goals.Count; ++i) {
+			GameObject obj = field[goals[i].x, goals[i].y];
+			if(obj == null || obj.tag != "Box") {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	// Start is called before the first frame update
 	void Start() {
 		map = new int[,] {
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 2, 0, 1, 0, 2, 0, 0, 0 },
+			{ 0, 0, 0, 0, 2, 0, 3, 3, 0, 0, 0 },
+			{ 0, 0, 0, 2, 3, 1, 0, 2, 0, 0, 0 },
 			{ 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0 },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 		};
@@ -79,6 +90,9 @@ public class GameManagerScript : MonoBehaviour {
 							Quaternion.identity
 							);
 						break;
+					case 3:
+						goals.Add(new Vector2Int(y, x));
+						break;
 				}
 			}
 		}
@@ -101,6 +115,9 @@ public class GameManagerScript : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.DownArrow)) {
 			Vector2Int playerIndex = GetPlayerIndex();
 			MoveNumber("Player", playerIndex, playerIndex + new Vector2Int(1, 0));
+		}
+		if (IsClear()) {
+			Debug.Log("Clear");
 		}
 	}
 }

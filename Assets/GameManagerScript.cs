@@ -21,7 +21,7 @@ public class GameManagerScript : MonoBehaviour {
 	Vector2Int GetPlayerIndex() {
 		for (int y = 0; y < field.GetLength(0); ++y) {
 			for (int x = 0; x < field.GetLength(1); ++x) {
-				if (!ReferenceEquals(field[y, x], null) && field[y, x].tag == "Player") {
+				if (!ReferenceEquals(field[y, x], null) && field[y, x].CompareTag("Player")) {
 					return new Vector2Int(y, x);
 				}
 			}
@@ -37,7 +37,7 @@ public class GameManagerScript : MonoBehaviour {
 		if (moveToIndex.x < 0 || moveToIndex.x >= field.GetLength(0) || moveToIndex.y < 0 || moveToIndex.y >= field.GetLength(1)) {
 			return false;
 		}
-		else if (!ReferenceEquals(field[moveToIndex.x, moveToIndex.y], null) && field[moveToIndex.x, moveToIndex.y].tag == "Box") {
+		else if (!ReferenceEquals(field[moveToIndex.x, moveToIndex.y], null) && field[moveToIndex.x, moveToIndex.y].CompareTag("Box")) {
 			Vector2Int velocity = moveToIndex - moveFromIndex;
 
 			bool success = MoveNumber(tag, moveToIndex, moveToIndex + velocity);
@@ -49,9 +49,9 @@ public class GameManagerScript : MonoBehaviour {
 		(field[moveToIndex.x, moveToIndex.y], field[moveFromIndex.x, moveFromIndex.y]) = (field[moveFromIndex.x, moveFromIndex.y], field[moveToIndex.x, moveToIndex.y]);
 
 		if (!ReferenceEquals(field[moveToIndex.x, moveToIndex.y], null))
-			field[moveToIndex.x, moveToIndex.y].transform.position = MakePositionFromIndex(moveToIndex);
+			field[moveToIndex.x, moveToIndex.y].GetComponent<Move>().MoveTo(MakePositionFromIndex(moveToIndex));
 		if (!ReferenceEquals(field[moveFromIndex.x, moveFromIndex.y], null))
-			field[moveFromIndex.x, moveFromIndex.y].transform.position = MakePositionFromIndex(moveFromIndex);
+			field[moveFromIndex.x, moveFromIndex.y].GetComponent<Move>().MoveTo(MakePositionFromIndex(moveFromIndex));
 
 		return true;
 	}
@@ -59,7 +59,7 @@ public class GameManagerScript : MonoBehaviour {
 	bool IsClear() {
 		for(int i = 0; i < goals.Count; ++i) {
 			GameObject obj = field[goals[i].x, goals[i].y];
-			if(obj == null || obj.tag != "Box") {
+			if(obj == null || !obj.CompareTag("Box")) {
 				return false;
 			}
 		}

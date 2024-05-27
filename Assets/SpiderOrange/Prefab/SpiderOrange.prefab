@@ -544,7 +544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0506997815b95a945ba3ec9afde39ab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particlePrefab: {fileID: 0}
+  particlePrefab: {fileID: 3555467595088188088, guid: adfbf6a55438d104aa9f6af1a1f5df54, type: 3}
 --- !u!1 &1545403800867726
 GameObject:
   m_ObjectHideFlags: 0

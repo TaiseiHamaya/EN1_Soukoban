@@ -100,10 +100,10 @@ public class GameManagerScript : MonoBehaviour {
 
 		map = new int[,] {
 			{ 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-			{ 4, 0, 0, 3, 0, 0, 2, 0, 0, 0, 4 },
-			{ 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4 },
+			{ 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4 },
+			{ 4, 0, 0, 4, 0, 4, 4, 0, 0, 0, 4 },
 			{ 4, 4, 4, 4, 2, 1, 4, 0, 0, 0, 4 },
-			{ 4, 0, 0, 0, 0, 0, 4, 4, 2, 4, 4 },
+			{ 4, 0, 0, 0, 0, 3, 4, 4, 2, 4, 4 },
 			{ 4, 0, 0, 0, 4, 0, 0, 0, 0, 3, 4 },
 			{ 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
 		};
@@ -166,7 +166,7 @@ public class GameManagerScript : MonoBehaviour {
 							temppos,
 							Quaternion.Euler(-90, 0, 0)
 							);
-				backgroundObjects[y, x].transform.rotation *= Quaternion.Euler(0, 90 * UnityEngine.Random.Range(0, 3), 0);
+				backgroundObjects[y, x].transform.rotation *= Quaternion.Euler(0, 90 * x * y, 0);
 				backgroundObjects[y, x].transform.localScale = new Vector3(0.75f, 1, 0.75f);
 			}
 		}

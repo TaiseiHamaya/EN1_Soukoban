@@ -1,16 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
 
 public class Move : MonoBehaviour {
+
+	public GameObject particlePrefab;
+
+	private ParticleSystem particleSystemObject;
 
 	private const float timeTaken = 0.2f;
 	private float timeElapsed;
 	private Vector3 destination;
 	private Vector3 origin;
+
 	// Start is called before the first frame update
 	void Start() {
+		if (particlePrefab != null) {
+			particleSystemObject = Instantiate(
+				particlePrefab.GetComponent<ParticleSystem>(), Vector3.zero, Quaternion.identity
+				);
+		}
 		destination = transform.position;
 		origin = destination;
 	}
@@ -23,7 +34,9 @@ public class Move : MonoBehaviour {
 		timeElapsed += Time.deltaTime;
 		float timeRate = timeElapsed / timeTaken;
 		if(timeRate > 1) { timeRate = 1; }
-		transform.position = Vector3.Lerp(origin, destination, Easing.InOutQuad(timeRate));
+		Vector3 move = Vector3.Lerp(origin, destination, Easing.InOutQuad(timeRate));
+
+		transform.position = move;
 	}
 
 	public void MoveTo(Vector3 newDestination) {
@@ -31,5 +44,10 @@ public class Move : MonoBehaviour {
 		origin = destination;
 		transform.position = origin;
 		destination = newDestination;
+		if (particleSystemObject != null) {
+			particleSystemObject.transform.position = origin;
+			particleSystemObject.transform.LookAt(origin - Vector3.Normalize(destination - origin));
+			particleSystemObject.GetComponent<ParticleSystem>().Play();
+		}
 	}
 }
